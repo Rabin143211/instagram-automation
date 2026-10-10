@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Instagram agent skill — 13 Claude skills that run an Instagram account</title>
+<meta name="description" content="Thirteen Claude skills that run an Instagram account. Free, MIT, no signup, no API key. Reels, captions, carousels, stories, profile score, weekly plan, comments, replies, DMs, repurposing, audits and a humanizer.">
+<style>
+  :root{
+    --bg:#0b0b12;
+    --bg-soft:#12121c;
+    --card:#161622;
+    --line:#26263a;
+    --text:#ececf4;
+    --muted:#9a9ab0;
+    --accent:#8b7bff;
+    --accent2:#ff7bd5;
+    --green:#4ade80;
+    --amber:#fbbf24;
+    --red:#f87171;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  header.hero{
+    position:relative;overflow:hidden;
+    padding:96px 0 72px;
+    background:
+      radial-gradient(900px 420px at 78% -8%, rgba(139,123,255,.28), transparent 60%),
+      radial-gradient(700px 380px at 8% 8%, rgba(255,123,213,.16), transparent 55%);
+    border-bottom:1px solid var(--line);
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
+    color:var(--muted);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;background:rgba(255,255,255,.02);
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+  h1{
+    font-size:clamp(2.1rem,5.4vw,3.5rem);line-height:1.08;
+    margin:22px 0 16px;letter-spacing:-.02em;font-weight:800;
+  }
+  h1 .grad{
+    background:linear-gradient(100deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{font-size:clamp(1.02rem,2.2vw,1.24rem);color:var(--muted);max-width:660px;margin:0 0 30px}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .btn{
+    display:inline-block;padding:12px 22px;border-radius:11px;font-weight:650;font-size:15px;
+    border:1px solid var(--line);color:var(--text);background:var(--card);
+  }
+  .btn.primary{
+    background:linear-gradient(100deg,var(--accent),var(--accent2));color:#0b0b12;border:none;
+  }
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+  .fact{font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:5px 11px;background:rgba(255,255,255,.015)}
+
+  section{padding:66px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(1.5rem,3.4vw,2.05rem);margin:0 0 8px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 34px;max-width:680px}
+  .kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .skill{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
+  }
+  .skill .cmd{font-family:var(--mono);font-size:13.5px;color:var(--accent2);font-weight:600}
+  .skill p{margin:8px 0 0;color:var(--muted);font-size:14.5px}
+
+  pre{
+    background:#0e0e18;border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;overflow:auto;font-family:var(--mono);font-size:13px;line-height:1.6;
+    color:#d7d7e6;margin:0 0 16px;
+  }
+  pre .c{color:#6b6b86}
+  pre .g{color:var(--green)}
+  pre .a{color:var(--amber)}
+  pre .r{color:var(--red)}
+  pre .p{color:var(--accent)}
+
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+  .tool h3{margin:0 0 4px;font-size:1.05rem}
+  .tool .lead{color:var(--muted);font-size:14px;margin:0 0 12px}
+  ul.clean{margin:0;padding-left:18px;color:var(--muted);font-size:14.5px}
+  ul.clean li{margin:5px 0}
+  ul.clean b{color:var(--text)}
+
+  .note{
+    background:var(--bg-soft);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:10px;padding:16px 18px;color:var(--muted);font-size:14.5px;margin:0 0 14px;
+  }
+  .note b{color:var(--text)}
+
+  footer{padding:54px 0 70px;color:var(--muted);font-size:14px}
+  .foot-grid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px}
+  code.inline{font-family:var(--mono);font-size:.9em;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px;color:#dcdcf0}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge"><span class="dot"></span> Free · MIT · no signup · no API key</span>
+    <h1>The Instagram <span class="grad">agent skill</span></h1>
+    <p class="lede">Thirteen Claude skills that run an Instagram account — a scored hook panel, a viral research skill, a caption linter, a profile score out of 100, a weekly plan, and a humanizer that strips the AI fingerprint before anything ships.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/Rabin143211/instagram-automation">View the repo on GitHub</a>
+      <a class="btn" href="#install">Install</a>
+    </div>
+    <div class="facts">
+      <span class="fact">13 skills</span>
+      <span class="fact">5 Python tools</span>
+      <span class="fact">26 hook formulas</span>
+      <span class="fact">154 slop terms</span>
+      <span class="fact">0 dependencies</span>
+    </div>
+  </div>
+</header>
+
+<section id="thirteen">
+  <div class="wrap">
+    <p class="kicker">What's inside</p>
+    <h2>The thirteen</h2>
+    <p class="sub">Nothing gets posted until you say yes. These skills write. You post.</p>
+    <div class="grid">
+      <div class="skill"><span class="cmd">/ig-reel</span><p>One idea into a Reel. Three hooks from 26 formulas, scored, then the script, on-screen text and a timed beat sheet.</p></div>
+      <div class="skill"><span class="cmd">/ig-viral</span><p>Finds what's working in your niche, ranks it by multiple over each account's own median, names the formula, writes the swipe file.</p></div>
+      <div class="skill"><span class="cmd">/ig-caption</span><p>The caption, linted. Shows the 125 characters the feed actually shows before the tap.</p></div>
+      <div class="skill"><span class="cmd">/ig-carousel</span><p>Swipe posts. The cover that earns the swipe, slide copy, and the 1080x1350 files.</p></div>
+      <div class="skill"><span class="cmd">/ig-story</span><p>The daily story sequence, which sticker does which job, and the DM funnel that starts with them moving first.</p></div>
+      <div class="skill"><span class="cmd">/ig-profile</span><p>Scores your profile against a 12-part rubric out of 100, then rewrites in fix-first order.</p></div>
+      <div class="skill"><span class="cmd">/ig-plan</span><p>The week. What to post, which format, when, and the 10 accounts to engage with.</p></div>
+      <div class="skill"><span class="cmd">/ig-human</span><p>The humanizer. Two scripts that actually run — clean a draft and score it against a five-check panel.</p></div>
+      <div class="skill"><span class="cmd">/ig-comment</span><p>Comments on other people's posts. Nine types, picked by what the post actually is. Never "🔥🔥🔥".</p></div>
+      <div class="skill"><span class="cmd">/ig-reply</span><p>The thread under your own post. Sorts into keyword / lead / substance / question / support / noise, then writes in that order.</p></div>
+      <div class="skill"><span class="cmd">/ig-dm</span><p>The keyword delivery, the first message, the collab pitch, and the two follow-ups. Two.</p></div>
+      <div class="skill"><span class="cmd">/ig-repurpose</span><p>One video, podcast or newsletter into a week of reels and carousels that each stand alone.</p></div>
+      <div class="skill"><span class="cmd">/ig-audit</span><p>Post-mortem on what you already posted. Ranks by outlier multiple and sends per reach, not views.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <p class="kicker">Runs on your machine</p>
+    <h2>The five tools that actually run</h2>
+    <p class="sub">No dependencies, no network, nothing uploaded. They run on your machine, on your text.</p>
+
+    <div class="cols">
+      <div class="tool">
+        <h3>Hooks</h3>
+        <p class="lead">Rank your options, then time the script before you shoot it.</p>
+<pre><span class="c">$</span> python3 hookscore.py hooks.txt
+<span class="c">$</span> python3 beats.py script.txt --target 30</pre>
+<pre>HOOK RANKING
+============================================
+<span class="g">-&gt;  85.6 STRONG</span>  Nobody tells you that your first 30 reels...
+        weakest: SPECIFICITY (75)
+<span class="g">    81.4 STRONG</span>  I lost $18,000 because of one missing contract.
+<span class="a">    54.4 OK</span>      Stop scrolling if you want to grow on Instagram 🔥
+<span class="r">     9.6 WEAK</span>    Hey guys, today I wanted to talk about...</pre>
+      </div>
+
+      <div class="tool">
+        <h3>The caption</h3>
+        <p class="lead">Instagram gives a caption ~125 characters in the feed. Almost every caption that fails, fails there.</p>
+<pre><span class="c">$</span> python3 caption.py caption.txt --keywords "client contracts,freelance pricing"</pre>
+<pre>  WHAT THE FEED SHOWS
+  +--------------------------------------+
+  | I lost $18,000 because of one missing|
+  | clause in a contract, and the worst  |
+  | part is that I had read the          |
+  +---------------------------- <span class="c">... more</span> +
+
+  <span class="g">PASS</span>  LENGTH       389 / 2200 characters
+  <span class="a">WARN</span>  FIRST LINE   133 characters, cut at 125 mid-thought
+  <span class="g">PASS</span>  HASHTAGS     3 tags: #freelance #contracts #agencyowner</pre>
+      </div>
+
+      <div class="tool">
+        <h3>The humanizer</h3>
+        <p class="lead">Strips the AI fingerprint, then proves the delta.</p>
+<pre><span class="c">$</span> python3 humanize.py draft.txt --report
+<span class="c">$</span> python3 detect.py draft.txt
+<span class="c">$</span> python3 detect.py before.txt after.txt</pre>
+<pre>  BURSTINESS    ###################.....  <span class="g">78.4</span>
+  SPECIFICITY   #############...........  <span class="a">53.6</span>
+  SLOP DENSITY  ........................   <span class="g">0.0</span>
+  FINGERPRINT   ################........  <span class="g">68.7</span>
+  VOICE         #################.......  <span class="g">70.0</span>
+  ------------------------------------------
+  HUMAN SCORE   ########................  <span class="r">32.5</span>   FLAGGED</pre>
+      </div>
+
+      <div class="tool">
+        <h3>The swipe file</h3>
+        <p class="lead">Raw views are not evidence. Rank on the multiple over each account's own median.</p>
+<pre><span class="c">$</span> python3 swipe.py captured.tsv --out ~/.claude/instagram/swipe.md</pre>
+<pre>SWIPE FILE · 4 reels · baseline: account median
+============================================
+<span class="g">  60.0x</span>  hook 57 #9  The Steal         @c   180,000
+<span class="g">  37.5x</span>  hook 86 #3  Nobody Tells You    @a   412,000
+<span class="a">   1.3x</span>  hook 13 -   unclassified        @b 1,200,000</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <p class="kicker">Get started</p>
+    <h2>Install</h2>
+    <p class="sub">Paste this into Claude, or clone it yourself. Then spend ten minutes on <code class="inline">templates/voice.md</code> — every skill reads it.</p>
+<pre>https://github.com/Rabin143211/instagram-automation
+
+Install this skill, then confirm /ig-reel works.</pre>
+    <p class="sub" style="margin-bottom:14px">Or in Claude Code:</p>
+<pre><span class="c"># clone</span>
+git clone https://github.com/Rabin143211/instagram-automation.git
+cp -r instagram-automation/skills/ig-* ~/.claude/skills/
+
+<span class="c"># or as a plugin</span>
+/plugin marketplace add Rabin143211/instagram-automation
+/plugin install instagram-agent</pre>
+  </div>
+</section>
+
+<section id="honest">
+  <div class="wrap">
+    <p class="kicker">The fine print</p>
+    <h2>The honest part</h2>
+    <div class="note"><b>These skills do not post to Instagram.</b> There is a real Content Publishing API for Professional accounts, but it needs a Meta developer app, a linked Page, a long-lived token and app review. Everything else people use to automate posting, commenting or DMing is browser automation or a third-party tool, and both violate Instagram's Terms of Use. So every skill ends the same way: a copy-ready block, and you post it.</div>
+    <div class="note"><b>/ig-viral reads, it does not scrape.</b> Ten accounts, a dozen reels each, at human speed, with you driving your own browser. It never asks for your password.</div>
+    <div class="note"><b>The detection checks are local heuristics, not detector APIs.</b> They run entirely on your machine and cannot promise a GPTZero verdict. Nobody can honestly sell you "undetectable", and anybody who does is selling you something.</div>
+    <div class="note"><b>Nothing here fabricates.</b> If a draft needs a number you have not given, it comes back with <code class="inline">{{your number}}</code> in it and a flag, every time.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div>Made by Jake Schincariol · <a href="https://opusjake.ai">opusjake.ai</a></div>
+      <div style="margin-top:6px">Packaged and published by Rabin Bhuyan.</div>
+    </div>
+    <div style="text-align:right">
+      <div><a href="https://github.com/Rabin143211/instagram-automation">github.com/Rabin143211/instagram-automation</a></div>
+      <div style="margin-top:6px">MIT License</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
